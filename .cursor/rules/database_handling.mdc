@@ -4,7 +4,6 @@ globs:
 alwaysApply: false
 ---
 # Database Management with Drizzle
-ANy drizzle migrations should specify the schema `phonogram`. We are not using the `public` schema in postgresql.
 
 1. Drizzle Kit Commands:
 ```markdown
