@@ -4,7 +4,7 @@ A modern web application starter kit created by [Rogue Valley AI Lab](https://rv
 
 ## Overview
 
-This starter kit provides a complete foundation for building professional contact management applications with the latest web technologies:
+This starter kit provides a complete foundation for building vibe coded applications with web technologies that play well with Vercel–a serverless platform that makes it easy to deploy publicly:
 
 - **Framework**: [Next.js](https://nextjs.org) with App Router
 - **Language**: TypeScript
@@ -15,22 +15,45 @@ This starter kit provides a complete foundation for building professional contac
 - **ORM**: Drizzle
 
 ## Getting Started
+There's a lot of details here, but the goal is primarily to give your AI agent the context to take these actions on your behalf. Make sure your cursor agent reads this file when first kickstarting your work. It'll make its work a lot more reliable! 
 
-First, run the development server:
+Note the AI: don't setup anything here until it's actually needed. For instance, don't bother with setting up a database until it's required to build out a feature. Always be conservative with adding complexity!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Node.js](https://nodejs.org/) (version 18 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- Git (for cloning the repository)
+
+### Installation and Setup
+
+1. Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/RVAILab/webapp-starter-kit
+   cd webapp-starter-kit
+   ```
+
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env.local` file based on the `.env.example` file:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Update the `.env.local` file with your own API keys and configuration values.
+
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result (just a basic NextJS page).
+
+Now you can ask Cursor to build new functionality with the specifics of this tech stack.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a custom font from Vercel.
 
@@ -42,7 +65,7 @@ This project uses [Neon](https://neon.tech) for PostgreSQL database and [Drizzle
 
 1. Create a Neon account and project at [neon.tech](https://neon.tech)
 2. Get your database connection string from the Neon dashboard
-3. Copy `.env.example` to `.env` and update the `DATABASE_URL` with your connection string
+3. update the `DATABASE_URL` with your connection string
 4. Generate database migrations:
    ```bash
    npm run db:generate
@@ -88,7 +111,7 @@ For more information and documentation, visit [Shadcn UI documentation](https://
 
 ## Authentication with Clerk
 
-This project uses [Clerk](https://clerk.com/) for user authentication and identity management.
+This project uses [Clerk](https://clerk.com/) for user authentication and identity management. A basic implementation of login/logout and profile menu is added to the layout file. You'll likely want to customize this furhter.
 
 ### Features
 
@@ -101,21 +124,12 @@ This project uses [Clerk](https://clerk.com/) for user authentication and identi
 
 ### Environment Setup
 
-To use Clerk, you need to set up environment variables:
+To use Clerk, you need to set up environment variables within your .env.local file (and later on Vercel, if you want to deploy this app to the cloud):
 
 1. Create a Clerk account at [clerk.com](https://clerk.com/)
 2. Create a new application in the Clerk dashboard
 3. Copy your API keys from the Clerk dashboard
-4. Add the required environment variables to your `.env` file:
-
-```bash
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
-```
+4. Add the required environment variables to your `.env.local` file:
 
 For more information, visit [Clerk documentation](https://clerk.com/docs).
 
@@ -135,7 +149,7 @@ This starter kit includes special-purpose rules in the `.cursor` directory that 
 
 ### Project-Wide Rules
 
-The `.cursorrules` file at the root of this project provides global guidance for the entire codebase, including:
+The `.cursorrules` file at the root of this project provides global guidance to the cursor agent for the entire codebase, including:
 
 - **Technical Standards**: Guidelines for TypeScript usage, Next.js best practices, and mobile-first design
 - **Development Approach**: Standardized pacing, scope control, and communication protocols
