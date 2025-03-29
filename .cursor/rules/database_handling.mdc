@@ -1,0 +1,90 @@
+---
+description: Creating, changing, or interacting with postgresql/database with drizzle
+globs: 
+alwaysApply: false
+---
+# Database Management with Drizzle
+ANy drizzle migrations should specify the schema `phonogram`. We are not using the `public` schema in postgresql.
+
+1. Drizzle Kit Commands:
+```markdown
+Do NOT use these commands:
+- `npx drizzle-kit generate:pg`
+- `npx drizzle-kit push:pg`
+- `npx drizzle-kit introspect:pg`
+
+Instead, use these:
+- `npx drizzle-kit generate`
+- `npx drizzle-kit push`
+- `npx drizzle-kit introspect`
+```
+
+2. Schema Configuration:
+
+Current:
+```typescript
+const schema = pgSchema('schema_name');
+export const users = schema.table('users', {
+  // columns
+});
+```
+```
+
+3. Database Connection:
+Use this:
+```typescript
+import { drizzle } from 'drizzle-orm/vercel-postgres';
+import { sql } from '@vercel/postgres';
+export const db = drizzle(sql);
+```
+
+## Database Operations
+### Direct PostgreSQL Commands
+```bash
+# Schema-only backup
+pg_dump "$POSTGRES_URL" --schema-only > "backups/schema_$(date +%Y%m%d_%H%M%S).sql"
+
+# Full backup (schema and data)
+pg_dump "$POSTGRES_URL" > "backups/full_$(date +%Y%m%d_%H%M%S).sql"
+
+# Execute SQL files
+psql "$POSTGRES_URL" -f path/to/your/script.sql
+```
+
+### Fallback Node.js Pattern
+If direct PostgreSQL commands fail (common with serverless databases), use this Node.js pattern:
+```typescript
+import { createPool } from '@vercel/postgres';
+import { config } from 'dotenv';
+import { readFileSync } from 'fs';
+
+config({ path: '.env.local' });
+
+const pool = createPool({
+  connectionString: process.env.POSTGRES_URL
+});
+
+// Execute SQL file
+const sqlContent = readFileSync('path/to/script.sql', 'utf-8');
+await pool.query(sqlContent);
+```
+
+## Environment Setup
+- Use `POSTGRES_URL` from `.env.local` for all operations
+- Keep backup files in `/backups` directory (already in `.gitignore`)
+
+
+## Other tips
+- Use `pgSchema` for schema isolation: Create separate schemas using `const schemaName = pgSchema('schema_name')`
+- Define tables within schema: Use `schemaName.table()` instead of `pgTable()`
+- Follow migration patterns:
+  1. Create schema first: Use raw SQL with `CREATE SCHEMA IF NOT EXISTS schema_name`
+  2. Generate migrations: `npx drizzle-kit generate`
+  3. Apply migrations: Use Drizzle's migration tools or raw SQL for complex cases
+- Schema Structure:
+  - Keep schema definitions in `src/db/schema/index.ts`
+  - Store migrations in `src/db/migrations/`
+  - Maintain database connection in `src/db/index.ts`
+- Type Safety:
+  - Export table types using `$inferSelect` and `$inferInsert`
+  - Example: `export type User = typeof users.$inferSelect`

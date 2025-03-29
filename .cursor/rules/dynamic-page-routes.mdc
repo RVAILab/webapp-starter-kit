@@ -1,0 +1,43 @@
+---
+description: Whenever setting up or editing dynamic page routes in nextjs
+globs: 
+alwaysApply: false
+---
+# Implementing Dynamic Routes in Next.js 15 Without Type Issues
+
+When creating dynamic route pages (e.g., `src/app/insights/[slug]/page.tsx`), follow these steps to avoid type errors:
+
+1. **Define the Props Interface**  
+   Create an interface for the page props that includes a `params` property (and optionally `searchParams`) defined as a Promise. For example:
+   ```ts
+   interface InsightPageProps {
+     params: Promise<{ slug: string }>;
+     // Mark searchParams as optional if it is not used
+     searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+   }
+   ```
+
+2. **Await the Params**  
+   In your async page component, await the `params` property to extract the dynamic segment:
+   ```ts
+   const resolvedParams = await params;
+   const { slug } = resolvedParams;
+   ```
+
+3. **Specify the Return Type**  
+   Annotate the page component’s return type as `Promise<ReactElement>` (importing `ReactElement` from `react`) to match Next.js expectations:
+   ```ts
+   import React, { ReactElement } from 'react';
+   
+   export default async function InsightPage({ params }: InsightPageProps): Promise<ReactElement> {
+     // Your component logic here
+   }
+   ```
+
+4. **Ignore Unused Properties**  
+   If you do not need `searchParams`, mark it as optional in your interface. This avoids ESLint warnings about unused variables.
+
+5. **Reference Official Documentation**  
+   For additional details, refer to the @Next.js Dynamic Routes Documentation.
+
+By following these guidelines, you can implement dynamic routes in Next.js 15 without encountering type errors.

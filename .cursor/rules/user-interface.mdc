@@ -1,0 +1,10 @@
+---
+description: When  installing shadcn components, implementing any UI elements, or creating other user interface components
+globs: 
+alwaysApply: false
+---
+Shadcn is already installed, do not try to reinstall it.
+
+Double check the components we already have installed in `src/components/ui` before adding.
+
+TO install new shadcn components use the following syntax: `npx shadcn@latest add [component-name]`
